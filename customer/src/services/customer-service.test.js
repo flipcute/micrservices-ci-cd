@@ -6,6 +6,7 @@ describe("Customer Service", () => {
     // which scenario we are testing
     test("validate user inputs", () => {});
 
+    // just a title
     test("validate response", () => {});
   });
 });
