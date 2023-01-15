@@ -1,4 +1,62 @@
-#check commits
+# #check commits
+# name: Deploy on QA
+
+# on:
+#   push:
+#     branches: ["main"]
+#   workflow_dispatch:
+
+# jobs:
+#   deploy_on_qa:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Source Code
+#         uses: actions/checkout@v2
+
+#       - name: Create product env file
+#       - working-directory: ./products
+#         run: |
+#           touch .env
+#           echo APP_SECRET=jg_youtube_tutorial >> .env
+#           echo MONGODB_URI=mongodb://nosql-db:27017/product_ms_db >> .env
+#           echo MESSAGE_BROKER_URL=amqp://localhost >> .env
+#           echo PORT=8001 >> .env
+#           cat .env
+#       - name: Create customer env file
+#       - working-directory: ./customer
+#         run: |
+#           touch .env
+#           echo APP_SECRET=jg_youtube_tutorial >> .env
+#           echo MONGODB_URI=mongodb://nosql-db:27017/customer_ms_db >> .env
+#           echo MESSAGE_BROKER_URL=amqp://localhost >> .env
+#           echo PORT=8002 >> .env
+#           cat .env
+#       - name: Create shopping env file
+#       - working-directory: ./shopping
+#         run: |
+#           touch .env
+#           echo APP_SECRET=jg_youtube_tutorial >> .env
+#           echo MONGODB_URI=mongodb://nosql-db:27017/shopping_ms_db >> .env
+#           echo MESSAGE_BROKER_URL=amqp://localhost >> .env
+#           echo PORT=8003 >> .env
+#           cat .env
+
+#       - name: Generate deployment package
+#         run: |
+#           zip -r deploy.zip . -x "*.git'
+
+#       - name: Deploy on Elastic beanstalk QA Env
+#         uses: einaregilsson/beanstalk-deploy@v20
+#         with:
+#           aws_access_key: ${{secrets.AWS_ACCESS_KEY_ID}}
+#           aws_secret_key: ${{secrets:AWS_SECRET_ACCESS_KEY}}
+#           application_name: test-ms
+#           environment_name: Testms-env
+#           version_label: "ver-${{github.sha}}"
+#           region: us-east-1
+#           deployment_package: deploy.zip
+
 name: Deploy on QA
 
 on:
@@ -12,10 +70,10 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Create product env file
-      - working-directory: ./products
+      - name: Create customer Env file
+        working-directory: ./customer
         run: |
           touch .env
           echo APP_SECRET=jg_youtube_tutorial >> .env
@@ -23,8 +81,8 @@ jobs:
           echo MESSAGE_BROKER_URL=amqp://localhost >> .env
           echo PORT=8001 >> .env
           cat .env
-      - name: Create customer env file
-      - working-directory: ./customer
+      - name: Create Products Env file
+        working-directory: ./products
         run: |
           touch .env
           echo APP_SECRET=jg_youtube_tutorial >> .env
@@ -32,8 +90,9 @@ jobs:
           echo MESSAGE_BROKER_URL=amqp://localhost >> .env
           echo PORT=8002 >> .env
           cat .env
-      - name: Create shopping env file
-      - working-directory: ./shopping
+
+      - name: Create shopping Env file
+        working-directory: ./shopping
         run: |
           touch .env
           echo APP_SECRET=jg_youtube_tutorial >> .env
@@ -44,15 +103,15 @@ jobs:
 
       - name: Generate deployment package
         run: |
-          zip -r deploy.zip . -x "*.git'
+          zip -r deploy.zip . -x '*.git'
 
       - name: Deploy on Elastic beanstalk QA Env
         uses: einaregilsson/beanstalk-deploy@v20
         with:
-          aws_access_key: ${{secrets.AWS_ACCESS_KEY_ID}}
-          aws_secret_key: ${{secrets:AWS_SECRET_ACCESS_KEY}}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: test-ms
           environment_name: Testms-env
-          version_label: "ver-${{github.sha}}"
-          region: us-east-1
+          version_label: "ver-${{ github.sha }}"
+          region: eu-central-1
           deployment_package: deploy.zip
