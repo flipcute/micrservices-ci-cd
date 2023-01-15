@@ -113,5 +113,5 @@ jobs:
           application_name: test-ms
           environment_name: Testms-env
           version_label: "ver-${{ github.sha }}"
-          region: eu-central-1
+          region: us-east-1
           deployment_package: deploy.zip
