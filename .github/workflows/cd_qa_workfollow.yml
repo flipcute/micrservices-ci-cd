@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@2
+        uses: actions/checkout@v2
 
       - name: Create product env file
       - working-directory: ./products
